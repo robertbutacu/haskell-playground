@@ -14,3 +14,14 @@ instance Applicative CustomMaybe where
     pure a = CustomJust a
     (<*>) f CustomNothing  = CustomNothing
     (<*>) f (CustomJust a) = fmap (\ff -> ff a) f
+
+instance Monad CustomMaybe where
+    (>>=) CustomNothing _  = CustomNothing
+    (>>=) (CustomJust v) f = f v
+
+
+someF :: CustomMaybe Int
+someF = do x <- CustomJust 50
+           y <- CustomJust 100
+           z <- CustomNothing
+           CustomJust (x + y)
