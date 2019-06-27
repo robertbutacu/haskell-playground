@@ -21,7 +21,6 @@ instance Monad CustomMaybe where
     (>>=) CustomNothing _  = CustomNothing
     (>>=) (CustomJust v) f = f v
 
-
 instance Semigroup a => Semigroup (CustomMaybe a) where
     (<>) CustomNothing _ = CustomNothing
     (<>) _ CustomNothing = CustomNothing
