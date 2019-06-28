@@ -44,8 +44,8 @@ validStates currPos matrix currPath = up ++ down ++ left ++ right
     down  = [downPath  | canStepOn downPath matrix  && notElem downPath currPath]
     left  = [leftPath  | canStepOn leftPath matrix  && notElem leftPath currPath]
     right = [rightPath | canStepOn rightPath matrix && notElem rightPath currPath]
-    upPath    = (fst currPos, snd currPos + 1)
-    downPath  = (fst currPos, snd currPos - 1)
+    downPath  = (fst currPos, snd currPos + 1)
+    upPath    = (fst currPos, snd currPos - 1)
     leftPath  = (fst currPos - 1, snd currPos)
     rightPath = (fst currPos + 1, snd currPos)
 
