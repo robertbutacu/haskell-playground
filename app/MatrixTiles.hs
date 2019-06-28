@@ -28,9 +28,27 @@ return the minimum number of steps required to reach the end coordinate from the
  since we would need to go through (1, 2) because there is a wall everywhere else on the second row.
 -}
 
+(???) = error "Not implemented"
+
+canStepOn :: (Int, Int) -> [[Bool]] -> Bool
+canStepOn (x, y) matrix =
+  case (x >= 0 && x < length (head matrix), y >= 0 && y < length matrix) of
+    (True, True) -> not (matrix !! y !! x)
+    (_, _)       -> False
+
 
 validStates :: (Int, Int) -> [[Bool]] -> [(Int, Int)] -> [(Int, Int)]
-validStates currPos matrix currPath = error "Not implemented valid states"
+validStates currPos matrix currPath = up ++ down ++ left ++ right
+  where
+    up    = [upPath    | canStepOn upPath matrix    && notElem upPath currPath]
+    down  = [downPath  | canStepOn downPath matrix  && notElem downPath currPath]
+    left  = [leftPath  | canStepOn leftPath matrix  && notElem leftPath currPath]
+    right = [rightPath | canStepOn rightPath matrix && notElem rightPath currPath]
+    upPath    = (fst currPos, snd currPos + 1)
+    downPath  = (fst currPos, snd currPos - 1)
+    leftPath  = (fst currPos - 1, snd currPos)
+    rightPath = (fst currPos + 1, snd currPos)
+
 
 constructAllPaths :: (Int, Int) -> (Int, Int) -> [[Bool]] -> [(Int, Int)] -> [(Int, Int)]
 constructAllPaths destination currPos matrix currPath =
@@ -45,4 +63,7 @@ findPath :: [[Bool]] -> (Int, Int) -> (Int, Int) -> [(Int, Int)]
 findPath matrix start finish = constructAllPaths finish start matrix []
 
 m :: [[Bool]]
-m = [[False, False, False, False], [True, True, False, True], [False, False, False, False], [False, False, False, False]]
+m = [[False, False, False, False],
+     [True,  True,  False, True],
+     [False, False, False, False],
+     [False, False, False, False]]
