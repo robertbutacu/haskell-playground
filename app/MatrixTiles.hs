@@ -49,13 +49,19 @@ validStates currPos matrix currPath = up ++ down ++ left ++ right
     leftPath  = (fst currPos - 1, snd currPos)
     rightPath = (fst currPos + 1, snd currPos)
 
+constructPaths :: (Int, Int) -> (Int, Int) -> [[Bool]] -> [(Int, Int)] -> [[(Int, Int)]]-> [[(Int, Int)]]
+constructPaths dest currPos matrix currPath foundJourneys = if dest == currPos
+                          then foundJourneys ++ [currPath ++ [currPos]]
+                          else case validStates currPos matrix currPath of
+                                  []     -> foundJourneys
+                                  states -> states >>= (\next -> constructPaths dest next matrix (currPath ++ [currPos]) foundJourneys)
+
 
 constructAllPaths :: (Int, Int) -> (Int, Int) -> [[Bool]] -> [(Int, Int)] -> [(Int, Int)]
 constructAllPaths destination currPos matrix currPath =
   fst . minimumBy customCmp $ allPaths
   where
-    allPaths                                    = map (withPathLength . nextPaths) (validStates currPos matrix currPath)
-    nextPaths nextPos                           = constructAllPaths destination nextPos matrix (currPath ++ [currPos])
+    allPaths                                    = map (\p -> (p, length p)) (constructPaths destination currPos matrix currPath [])
     withPathLength path                         = (path, length path)
     customCmp (path1, length1) (path2, length2) = compare length1 length2
 
