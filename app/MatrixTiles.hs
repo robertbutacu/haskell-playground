@@ -28,7 +28,6 @@ return the minimum number of steps required to reach the end coordinate from the
  since we would need to go through (1, 2) because there is a wall everywhere else on the second row.
 -}
 
-(???) = error "Not implemented"
 
 canStepOn :: (Int, Int) -> [[Bool]] -> Bool
 canStepOn (x, y) matrix =
